@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="th"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>อ่านตรงนี้ก่อนครับ!!!!!   ข้อมูลทั้งหมด ยังไม่ใช่ข้อมูลจริง  (Version สำหรับทดสอบเท่านั้น!!!) — Intranet Portal</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--red:#CC1E1E;--red-dark:#A01515;--red-light:#FDEAEA;--white:#fff;--gray-50:#f8f8f8;--gray-100:#f0f0f0;--gray-200:#e0e0e0;--gray-500:#888;--gray-700:#444;--gray-900:#1a1a1a;}
+body{font-family:'Sarabun','Segoe UI',sans-serif;background:var(--gray-50);}
+.header{background:var(--red);display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:68px;position:sticky;top:0;z-index:100;}
+.header-left{display:flex;align-items:center;gap:16px;}
+.logo-box{width:48px;height:48px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;font-size:13px;font-weight:900;color:var(--red);}
+.site-title h1{color:#fff;font-size:17px;font-weight:700;line-height:1.2;}
+.site-title p{color:#fff;font-size:12px;opacity:.85;font-weight:300;}
+.date-badge{background:rgba(255,255,255,0.15);color:#fff;font-size:11px;padding:5px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.25);text-align:right;line-height:1.5;}
+.date-badge .lbl{opacity:.7;font-size:10px;display:block;}
+.nav-bar{background:var(--red-dark);display:flex;align-items:center;gap:2px;padding:0 32px;height:40px;overflow-x:auto;}
+.nav-item{color:rgba(255,255,255,0.8);font-size:13px;padding:0 14px;height:40px;display:flex;align-items:center;cursor:pointer;white-space:nowrap;border-radius:4px;}
+.nav-item.active,.nav-item:hover{background:rgba(255,255,255,0.15);color:#fff;}
+.hero{background:linear-gradient(135deg,#A01515 0%,#CC1E1E 50%,#E53030 100%);padding:28px 32px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;background:rgba(255,255,255,0.05);border-radius:50%;}
+.hero h2{color:#fff;font-size:22px;font-weight:700;margin-bottom:6px;}
+.hero p{color:rgba(255,255,255,0.85);font-size:13px;max-width:600px;line-height:1.7;}
+.main{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 148px);}
+.sidebar{background:var(--white);border-right:1px solid var(--gray-200);padding:20px 0;}
+.sidebar-title{font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.08em;padding:0 20px 8px;margin-top:8px;}
+.dept-item{display:flex;align-items:center;gap:10px;padding:8px 20px;cursor:pointer;transition:background .12s;border-left:3px solid transparent;font-size:13px;color:var(--gray-700);}
+.dept-item:hover,.dept-item.active{background:var(--red-light);border-left-color:var(--red);color:var(--red-dark);}
+.dept-item.active{font-weight:600;}
+.dept-icon{width:28px;height:28px;border-radius:6px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.dept-item.active .dept-icon,.dept-item:hover .dept-icon{background:rgba(0,0,0,0.06);}
+.content{padding:24px 28px;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-header h3{font-size:15px;font-weight:700;color:var(--gray-900);}
+.see-all{font-size:12px;color:var(--red);cursor:pointer;font-weight:500;border:1px solid var(--red);padding:4px 10px;border-radius:20px;}
+.quick-links{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.quick-link{background:var(--white);border:1px solid var(--gray-200);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--gray-700);cursor:pointer;text-decoration:none;transition:all .12s;}
+.quick-link:hover{border-color:var(--red);color:var(--red);background:var(--red-light);}
+.ql-icon{font-size:16px;}
+.announce-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.announce-card{background:var(--white);border-radius:10px;border:1px solid var(--gray-200);padding:14px 16px;position:relative;overflow:hidden;}
+.announce-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
+.announce-card.urgent::before{background:#e53030;}
+.announce-card.info::before{background:#2196F3;}
+.announce-card.success::before{background:#4CAF50;}
+.announce-card.warn::before{background:#FF9800;}
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;margin-bottom:8px;text-transform:uppercase;}
+.tag.urgent{background:#FDEAEA;color:#A01515;}
+.tag.info{background:#E3F2FD;color:#1565C0;}
+.tag.success{background:#E8F5E9;color:#2E7D32;}
+.tag.warn{background:#FFF3E0;color:#E65100;}
+.announce-card h4{font-size:13px;font-weight:600;color:var(--gray-900);margin-bottom:4px;line-height:1.4;}
+.announce-card p{font-size:11px;color:var(--gray-500);}
+.dept-badge{font-size:10px;color:var(--red);font-weight:600;margin-top:6px;}
+.filter-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.filter-tab{font-size:12px;padding:4px 12px;border-radius:20px;border:1px solid var(--gray-200);background:var(--white);cursor:pointer;color:var(--gray-700);transition:all .12s;}
+.filter-tab.active{background:var(--red);color:#fff;border-color:var(--red);}
+.filter-tab:hover:not(.active){border-color:var(--red);color:var(--red);}
+.forms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.form-card{background:var(--white);border-radius:8px;border:1px solid var(--gray-200);padding:12px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;text-decoration:none;transition:all .12s;}
+.form-card:hover{border-color:var(--red);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.form-icon{width:36px;height:36px;border-radius:8px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.form-card:hover .form-icon{background:var(--red-light);}
+.form-info h5{font-size:12px;font-weight:600;color:var(--gray-900);margin-bottom:2px;line-height:1.3;}
+.form-info span{font-size:10px;color:var(--gray-500);}
+.form-arrow{color:var(--gray-500);font-size:14px;margin-top:2px;}
+.footer{background:var(--gray-900);color:rgba(255,255,255,0.6);text-align:center;padding:14px;font-size:11px;}
+.footer strong{color:#fff;}
+</style></head><body>
+<div class="header">
+  <div class="header-left">
+    <div class="logo-box">TCP</div>
+    <div class="site-title"><h1>อ่านตรงนี้ก่อนครับ!!!!!   ข้อมูลทั้งหมด ยังไม่ใช่ข้อมูลจริง  (Version สำหรับทดสอบเท่านั้น!!!)</h1><p>บริษัท ที.ซี.ฟาร์มา-เคม จำกัด — Intranet Portal</p></div>
+  </div>
+  <div class="date-badge">
+    <span class="lbl">อัปเดตเมื่อ</span>
+    25 มีนาคม 2569
+  </div>
+</div>
+<div class="nav-bar">
+  <div class="nav-item active">หน้าแรก</div>
+  <div class="nav-item">ประกาศทั้งหมด</div>
+  <div class="nav-item">แบบฟอร์ม</div>
+  <div class="nav-item">ปฏิทินองค์กร</div>
+  <div class="nav-item">ระเบียบ / นโยบาย</div>
+  <div class="nav-item">ติดต่อ IT</div>
+</div>
+<div class="hero">
+  <h2>ยินดีต้อนรับสู่ระบบ Intranet TCP </h2>
+  <p>ศูนย์กลางประกาศ ข่าวสาร และแบบฟอร์มของทุกแผนก เพื่อการทำงานที่สะดวก รวดเร็ว และมีประสิทธิภาพ</p>
+</div>
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-title">แผนกทั้งหมด</div>
+    
+    <div class="dept-item active" onclick="filterDept('IT',this)">
+      <div class="dept-icon">💻</div><span>ไอทีและเทคโนโลยี</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('HR',this)">
+      <div class="dept-icon">👥</div><span>ทรัพยากรบุคคล</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Finance',this)">
+      <div class="dept-icon">💰</div><span>การเงินและบัญชี</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('QC',this)">
+      <div class="dept-icon">🔬</div><span>ควบคุมคุณภาพ</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Production',this)">
+      <div class="dept-icon">🏭</div><span>ฝ่ายผลิต</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Warehouse',this)">
+      <div class="dept-icon">📦</div><span>คลังสินค้า</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Logistics',this)">
+      <div class="dept-icon">🚚</div><span>โลจิสติกส์</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Marketing',this)">
+      <div class="dept-icon">📣</div><span>การตลาด</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Sales',this)">
+      <div class="dept-icon">🛒</div><span>ฝ่ายขาย</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Engineering',this)">
+      <div class="dept-icon">⚙️</div><span>วิศวกรรม</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('R&D',this)">
+      <div class="dept-icon">🧪</div><span>วิจัยและพัฒนา</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Admin',this)">
+      <div class="dept-icon">🏢</div><span>ธุรการ</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('QA',this)">
+      <div class="dept-icon">🛡️</div><span>ประกันคุณภาพ</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Purchasing',this)">
+      <div class="dept-icon">📋</div><span>จัดซื้อจัดจ้าง</span>
+    </div>
+    <div class="dept-item" onclick="filterDept('Safety',this)">
+      <div class="dept-icon">🔒</div><span>ความปลอดภัย</span>
+    </div>
+  </div>
+  <div class="content">
+    <div class="quick-links"><a class="quick-link" href="https://forms.google.com/" target="_blank"><span class="ql-icon">📋</span>แบบฟอร์มขอลา</a><a class="quick-link" href="https://forms.google.com/" target="_blank"><span class="ql-icon">🖨️</span>ขอใช้อุปกรณ์ IT</a><a class="quick-link" href="https://forms.google.com/" target="_blank"><span class="ql-icon">🔧</span>แจ้งซ่อมบำรุง</a><a class="quick-link" href="https://forms.google.com/" target="_blank"><span class="ql-icon">📦</span>เบิกพัสดุ</a><a class="quick-link" href="https://forms.google.com/" target="_blank"><span class="ql-icon">🚗</span>ขอใช้ยานพาหนะ</a><a class="quick-link" href="https://forms.google.com/" target="_blank"><span class="ql-icon">💰</span>เบิกค่าใช้จ่าย</a></div>
+    <div class="section-header"><h3>📢 ประกาศสำคัญล่าสุด</h3><div class="see-all">ดูทั้งหมด →</div></div>
+    <div class="announce-grid"><div class="announce-card urgent">
+      <div class="tag urgent">ด่วนมาก</div>
+      <h4>🚨 ปิดระบบ ERP เพื่อ Maintenance</h4>
+      <p>วันเสาร์ที่ 29 มี.ค. 68 เวลา 22:00–06:00 น.</p>
+      <div class="dept-badge">IT</div>
+    </div><div class="announce-card info">
+      <div class="tag info">ทั่วไป</div>
+      <h4>📌 ปรับปรุงระเบียบการลาประจำปี 2568</h4>
+      <p>มีผลบังคับใช้ตั้งแต่ 1 เมษายน 2568</p>
+      <div class="dept-badge">HR</div>
+    </div><div class="announce-card success">
+      <div class="tag success">ยินดีด้วย</div>
+      <h4>🏆 แผนก QC ผ่านการรับรอง ISO 9001:2015</h4>
+      <p>ผลการตรวจประเมินเมื่อวันที่ 20 มีนาคม 2568</p>
+      <div class="dept-badge">QC</div>
+    </div><div class="announce-card warn">
+      <div class="tag warn">แจ้งเตือน</div>
+      <h4>⏰ กำหนดส่งแผนงานไตรมาส Q2/2568</h4>
+      <p>ทุกแผนกส่งแผนงานภายในวันที่ 31 มีนาคม 2568</p>
+      <div class="dept-badge">Management</div>
+    </div></div>
+    <div class="section-header"><h3>📁 แบบฟอร์มตามแผนก</h3><div class="see-all">ดูทั้งหมด →</div></div>
+    <div class="filter-tabs" id="filterTabs"><div class="filter-tab active" onclick="filterForms('ทั้งหมด',this)">ทั้งหมด</div><div class="filter-tab" onclick="filterForms('HR',this)">HR</div><div class="filter-tab" onclick="filterForms('Finance',this)">Finance</div><div class="filter-tab" onclick="filterForms('IT',this)">IT</div><div class="filter-tab" onclick="filterForms('Engineering',this)">Engineering</div><div class="filter-tab" onclick="filterForms('Warehouse',this)">Warehouse</div><div class="filter-tab" onclick="filterForms('Admin',this)">Admin</div></div>
+    <div class="forms-grid" id="formsGrid"></div>
+  </div>
+</div>
+<div class="footer"><strong>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</strong></div>
+<script>
+const allForms=[{"id":1,"icon":"📋","name":"ใบลาป่วย / ลากิจ","dept":"HR","url":"https://forms.google.com/"},{"id":2,"icon":"🏖️","name":"ขอลาพักร้อน","dept":"HR","url":"https://forms.google.com/"},{"id":3,"icon":"💵","name":"เบิกค่าใช้จ่าย","dept":"Finance","url":"https://forms.google.com/"},{"id":4,"icon":"🧾","name":"ใบวางบิล","dept":"Finance","url":"https://forms.google.com/"},{"id":5,"icon":"🖨️","name":"ขอใช้อุปกรณ์ IT","dept":"IT","url":"https://forms.google.com/"},{"id":6,"icon":"🔑","name":"ขอสิทธิ์ระบบ","dept":"IT","url":"https://forms.google.com/"},{"id":7,"icon":"🔧","name":"แจ้งซ่อมบำรุง","dept":"Engineering","url":"https://forms.google.com/"},{"id":8,"icon":"📦","name":"ใบเบิกพัสดุ","dept":"Warehouse","url":"https://forms.google.com/"},{"id":9,"icon":"🚗","name":"ขอใช้ยานพาหนะ","dept":"Admin","url":"https://forms.google.com/"}];
+function filterForms(dept,el){
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const list=dept==='ทั้งหมด'?allForms:allForms.filter(f=>f.dept===dept);
+  document.getElementById('formsGrid').innerHTML=list.map(f=>'<a class="form-card" href="'+f.url+'" target="_blank"><div class="form-icon">'+f.icon+'</div><div class="form-info"><h5>'+f.name+'</h5><span>'+f.dept+'</span></div><div class="form-arrow">↗</div></a>').join('');
+}
+function filterDept(dept,el){
+  document.querySelectorAll('.dept-item').forEach(d=>d.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const tab=Array.from(document.querySelectorAll('.filter-tab')).find(t=>t.textContent===dept);
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  if(tab)tab.classList.add('active');else{const ft=document.querySelector('.filter-tab');if(ft)ft.classList.add('active');}
+  filterForms(dept,null);
+}
+filterForms('ทั้งหมด',null);
+</script>
+</body></html>
