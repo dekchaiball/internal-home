@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>T.C. Pharma-Chem</title>
-<script>window.tailwind=window.tailwind||{};tailwind.config={darkMode:'class'};</script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>(function(){try{if(localStorage.getItem('tcpPortalDark')==='1'){document.documentElement.classList.add('dark');}}catch(e){}})();</script>
 <style>
 body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;transition:background-color .2s,color .2s;}
 .hero-visual{background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.9) 0 15%,rgba(255,255,255,.35) 16% 24%,transparent 25%),radial-gradient(circle at 50% 80%,rgba(229,48,48,.30),transparent 26%),linear-gradient(135deg,rgba(253,234,234,.28),rgba(229,48,48,.20));}
@@ -105,7 +103,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           <a href="#" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-red-500 grid place-items-center text-white font-black shadow hover:scale-110 transition">▶</a>
         </div></div>
       </div>
-      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 16:24</span></div>
+      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 16:30</span></div>
     </footer>
 
     <div id="tcpEmployeeModal" class="fixed inset-0 z-50 hidden">
@@ -238,60 +236,38 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         }
       }
       
-      window.tcpCopyEmployeeText = function(text, btn){
-        function success(){
+      window.tcpCopyValue = function(value, btn){
+        var txt = String(value || '');
+        function done(){
           if(btn){
-            var oldText = btn.innerHTML;
-            btn.innerHTML = '✅ คัดลอกแล้ว';
-            btn.disabled = true;
+            var old = btn.textContent;
+            btn.textContent = '✅ คัดลอกแล้ว';
+            btn.classList.add('bg-green-50','text-green-700','border-green-200');
             setTimeout(function(){
-              btn.innerHTML = oldText || '📋 Copy';
-              btn.disabled = false;
-            }, 1400);
-          } else {
-            alert('คัดลอกข้อมูลแล้ว');
+              btn.textContent = old || '📋 Copy';
+              btn.classList.remove('bg-green-50','text-green-700','border-green-200');
+            }, 1200);
           }
         }
-
-        function fallbackCopy(){
-          var textarea = document.createElement('textarea');
-          textarea.value = text;
-          textarea.setAttribute('readonly', '');
-          textarea.style.position = 'fixed';
-          textarea.style.left = '-9999px';
-          textarea.style.top = '0';
-          document.body.appendChild(textarea);
-          textarea.focus();
-          textarea.select();
-
-          try {
-            var ok = document.execCommand('copy');
-            if(ok) success();
-            else alert('ไม่สามารถ Copy อัตโนมัติได้ กรุณา Copy ด้วยตนเอง:\n\n' + text);
-          } catch(e) {
-            alert('ไม่สามารถ Copy อัตโนมัติได้ กรุณา Copy ด้วยตนเอง:\n\n' + text);
-          }
-
-          document.body.removeChild(textarea);
+        function fallback(){
+          var ta = document.createElement('textarea');
+          ta.value = txt;
+          ta.setAttribute('readonly','');
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          ta.style.top = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try { document.execCommand('copy'); done(); }
+          catch(e) { alert('กรุณาคัดลอกด้วยตนเอง:\n\n' + txt); }
+          document.body.removeChild(ta);
         }
-
         if(navigator.clipboard && window.isSecureContext){
-          navigator.clipboard.writeText(text).then(success).catch(fallbackCopy);
+          navigator.clipboard.writeText(txt).then(done).catch(fallback);
         } else {
-          fallbackCopy();
+          fallback();
         }
-      };
-
-      window.tcpCopyEmployee = function(index, btn){
-        var employee = (window.tcpLastFound || [])[index];
-        if(!employee) return;
-
-        var text = Object.entries(employee)
-          .filter(function(item){ return item[1]; })
-          .map(function(item){ return item[0] + ': ' + item[1]; })
-          .join('\n');
-
-        window.tcpCopyEmployeeText(text, btn);
       };
 
       window.tcpSearchEmployees = function(){
@@ -301,17 +277,21 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         if(!box) return;
         if(!q){ box.innerHTML = '<div class="rounded-2xl bg-slate-50 dark:bg-slate-800 p-5 text-center text-slate-500">พิมพ์คำค้นหาเพื่อค้นหาพนักงาน</div>'; return; }
         var found = (window.tcpEmployees || []).filter(function(o){ return Object.values(o).join(' ').toLowerCase().includes(q); }).slice(0,30);
-        window.tcpLastFound = found;
         status.textContent = 'ผลการค้นหา ' + found.length + ' รายการ';
-        box.innerHTML = found.map(function(o, index){
-          var vals = Object.entries(o).filter(function(x){return x[1];}).slice(0,8);
+        box.innerHTML = found.map(function(o){
+          var vals = Object.entries(o).filter(function(x){return x[1];}).slice(0,10);
           var title = vals[0] ? vals[0][1] : 'พนักงาน';
-          return '<div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 bg-white dark:bg-slate-950">'
-            + '<div class="flex items-start justify-between gap-3">'
+          return '<div class="rounded-2xl border border-slate-200 p-4 bg-white shadow-sm">'
             + '<b class="text-lg">' + window.tcpEsc(title) + '</b>'
-            + '<button type="button" onclick="event.preventDefault(); event.stopPropagation(); window.tcpCopyEmployee(' + index + ', this)" class="shrink-0 inline-flex items-center gap-1 rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-600 hover:text-white transition" title="Copy ข้อมูลพนักงาน">📋 Copy</button>'
-            + '</div>'
-            + '<div class="grid sm:grid-cols-2 gap-2 mt-3 text-sm">' + vals.map(function(x){ return '<div><span class="text-slate-400">' + window.tcpEsc(x[0]) + ':</span> ' + window.tcpEsc(x[1]) + '</div>'; }).join('') + '</div>'
+            + '<div class="grid gap-2 mt-3 text-sm">' + vals.map(function(x){
+                var label = window.tcpEsc(x[0]);
+                var value = window.tcpEsc(x[1]);
+                var raw = encodeURIComponent(String(x[1] || ''));
+                return '<div class="flex items-center justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2">'
+                  + '<div class="min-w-0"><span class="text-slate-400">' + label + ':</span> <span class="font-semibold break-words">' + value + '</span></div>'
+                  + '<button type="button" onclick="event.preventDefault();event.stopPropagation();window.tcpCopyValue(decodeURIComponent('' + raw + ''), this)" class="shrink-0 px-3 py-1.5 rounded-lg border border-red-100 bg-white text-red-700 text-xs font-bold hover:bg-red-600 hover:text-white transition" title="Copy เฉพาะข้อมูลนี้">📋 Copy</button>'
+                  + '</div>';
+              }).join('') + '</div>'
             + '</div>';
         }).join('') || '<div class="rounded-2xl bg-red-50 p-5 text-center text-slate-500">ไม่พบข้อมูลที่ค้นหา</div>';
       }
