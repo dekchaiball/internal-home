@@ -105,7 +105,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           <a href="#" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-red-500 grid place-items-center text-white font-black shadow hover:scale-110 transition">▶</a>
         </div></div>
       </div>
-      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 16:34</span></div>
+      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 16:37</span></div>
     </footer>
 
     <div id="tcpEmployeeModal" class="fixed inset-0 z-50 hidden">
@@ -237,75 +237,20 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           status.innerHTML = 'ยังโหลดข้อมูลไม่ได้ อาจต้องเปิดสิทธิ์ Google Sheet เป็น Anyone with the link หรือ Publish to web ก่อน';
         }
       }
-      window.tcpCopyField = function(value, btn){
-        var txt = String(value || '');
-        if(!txt) return;
-        function done(){
-          if(btn){
-            var oldText = btn.textContent;
-            btn.textContent = '✅';
-            btn.title = 'คัดลอกแล้ว';
-            setTimeout(function(){
-              btn.textContent = oldText || '📋';
-              btn.title = 'Copy';
-            }, 1200);
-          }
-        }
-        function fallback(){
-          var ta = document.createElement('textarea');
-          ta.value = txt;
-          ta.setAttribute('readonly', '');
-          ta.style.position = 'fixed';
-          ta.style.left = '-9999px';
-          ta.style.top = '-9999px';
-          document.body.appendChild(ta);
-          ta.focus();
-          ta.select();
-          try {
-            document.execCommand('copy');
-            done();
-          } catch(e) {
-            alert('กรุณาคัดลอกด้วยตนเอง:
-
-' + txt);
-          }
-          document.body.removeChild(ta);
-        }
-        if(navigator.clipboard && window.isSecureContext){
-          navigator.clipboard.writeText(txt).then(done).catch(fallback);
-        } else {
-          fallback();
-        }
-      };
-
       window.tcpSearchEmployees = function(){
-        var inputEl = document.getElementById('tcpEmployeeSearchInput');
-        var q = ((inputEl && inputEl.value) || '').trim().toLowerCase();
+        var q = (document.getElementById('tcpEmployeeSearchInput')?.value || '').trim().toLowerCase();
         var box = document.getElementById('tcpEmployeeResults');
         var status = document.getElementById('tcpEmployeeStatus');
         if(!box) return;
-        if(!q){ box.innerHTML = '<div class="rounded-2xl bg-slate-50 p-5 text-center text-slate-500">พิมพ์คำค้นหาเพื่อค้นหาพนักงาน</div>'; return; }
+        if(!q){ box.innerHTML = '<div class="rounded-2xl bg-slate-50 dark:bg-slate-800 p-5 text-center text-slate-500">พิมพ์คำค้นหาเพื่อค้นหาพนักงาน</div>'; return; }
         var found = (window.tcpEmployees || []).filter(function(o){ return Object.values(o).join(' ').toLowerCase().includes(q); }).slice(0,30);
         status.textContent = 'ผลการค้นหา ' + found.length + ' รายการ';
-        box.innerHTML = found.map(function(o, employeeIndex){
-          var vals = Object.entries(o).filter(function(x){return x[1];}).slice(0,10);
+        box.innerHTML = found.map(function(o){
+          var vals = Object.entries(o).filter(function(x){return x[1];}).slice(0,8);
           var title = vals[0] ? vals[0][1] : 'พนักงาน';
-          return '<div class="rounded-2xl border border-slate-200 p-4 bg-white shadow-sm">'
-            + '<div class="flex items-start justify-between gap-3">'
+          return '<div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 bg-white dark:bg-slate-950">'
             + '<b class="text-lg">' + window.tcpEsc(title) + '</b>'
-            + '<button type="button" onclick="event.preventDefault();event.stopPropagation();window.tcpCopyField(' + JSON.stringify(vals.map(function(x){return x[0] + ': ' + x[1];}).join('\n')) + ', this)" class="px-3 py-1.5 rounded-xl bg-red-50 text-red-700 border border-red-100 text-xs font-bold hover:bg-red-600 hover:text-white transition" title="Copy ข้อมูลทั้งหมดของพนักงานคนนี้">📋 Copy ทั้งหมด</button>'
-            + '</div>'
-            + '<div class="grid sm:grid-cols-2 gap-2 mt-3 text-sm">'
-            + vals.map(function(x, fieldIndex){
-                var label = window.tcpEsc(x[0]);
-                var value = window.tcpEsc(x[1]);
-                var rawValue = JSON.stringify(String(x[1] || ''));
-                return '<div class="flex items-center justify-between gap-2 rounded-xl bg-slate-50 border border-slate-100 px-3 py-2">'
-                  + '<div class="min-w-0"><span class="text-slate-400">' + label + ':</span> <span class="font-medium break-words">' + value + '</span></div>'
-                  + '<button type="button" onclick="event.preventDefault();event.stopPropagation();window.tcpCopyField(' + rawValue + ', this)" class="shrink-0 w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-red-600 hover:text-white transition" title="Copy เฉพาะ ' + label + '">📋</button>'
-                  + '</div>';
-              }).join('')
-            + '</div>'
+            + '<div class="grid sm:grid-cols-2 gap-2 mt-3 text-sm">' + vals.map(function(x){ return '<div><span class="text-slate-400">' + window.tcpEsc(x[0]) + ':</span> ' + window.tcpEsc(x[1]) + '</div>'; }).join('') + '</div>'
             + '</div>';
         }).join('') || '<div class="rounded-2xl bg-red-50 p-5 text-center text-slate-500">ไม่พบข้อมูลที่ค้นหา</div>';
       }
