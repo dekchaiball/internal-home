@@ -105,7 +105,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           <a href="#" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-red-500 grid place-items-center text-white font-black shadow hover:scale-110 transition">▶</a>
         </div></div>
       </div>
-      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 14:48</span></div>
+      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 15:10</span></div>
     </footer>
 
     <div id="tcpEmployeeModal" class="fixed inset-0 z-50 hidden">
@@ -155,7 +155,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
       },0);
 
       window.tcpFilterForms = function(dept){
-        window.tcpSelectedDept = dept || 'ALL';
+        window.tcpSelectedDept = String(dept || 'ALL').trim().toUpperCase();
         window.tcpRenderForms();
         var target = document.getElementById('forms');
         if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
@@ -167,7 +167,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         var searchBox = document.getElementById('tcpFormSearch');
         var q = searchBox ? searchBox.value.trim().toLowerCase() : '';
         var filtered = forms.filter(function(f){
-          var matchDept = selected === 'ALL' || String(f.dept || '') === selected;
+          var matchDept = selected === 'ALL' || String(f.dept || '').trim().toUpperCase() === String(selected || '').trim().toUpperCase();
           var text = [f.name, f.dept, f.url].join(' ').toLowerCase();
           return matchDept && (!q || text.indexOf(q) !== -1);
         });
@@ -176,7 +176,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         if(label) label.textContent = selected === 'ALL' ? 'แสดงแบบฟอร์มทั้งหมด' : 'แสดงแบบฟอร์มของแผนก ' + selected;
 
         document.querySelectorAll('.tcp-filter-btn').forEach(function(btn){
-          var active = btn.getAttribute('data-dept') === selected;
+          var active = String(btn.getAttribute('data-dept') || '').trim().toUpperCase() === String(selected || '').trim().toUpperCase();
           btn.className = 'tcp-filter-btn px-8 py-3 rounded-2xl font-black transition ' + (active ? 'bg-red-600 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-100 hover:bg-red-50');
         });
 
@@ -193,7 +193,10 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
             + '</a>';
         }).join('');
 
-        if(empty) empty.classList.toggle('hidden', filtered.length > 0);
+        if(empty) {
+          empty.textContent = filtered.length > 0 ? '' : (selected === 'ALL' ? 'ไม่พบแบบฟอร์ม' : 'ไม่พบแบบฟอร์มของแผนก ' + selected);
+          empty.classList.toggle('hidden', filtered.length > 0);
+        }
       }
 
       window.tcpOpenEmployeeSearch = function(){
@@ -204,26 +207,28 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
       window.tcpCloseEmployeeSearch = function(){ document.getElementById('tcpEmployeeModal').classList.add('hidden'); };
 
       window.tcpSheetIdFromUrl = function(url){
-        var m = String(url).match(//spreadsheets/d/([^/]+)/);
-        return m ? m[1] : '';
-      }
+        var textUrl = String(url || '');
+        var marker = '/spreadsheets/d/';
+        var start = textUrl.indexOf(marker);
+        if(start < 0) return '';
+        return textUrl.slice(start + marker.length).split('/')[0];
+      };
       window.tcpParseCSV = function(text){
         var rows=[], row=[], cell='', quote=false;
         for(var i=0;i<text.length;i++){
           var c=text[i], n=text[i+1];
+          var code=c.charCodeAt(0);
           if(c === '"' && quote && n === '"'){ cell += '"'; i++; }
           else if(c === '"'){ quote = !quote; }
           else if(c === ',' && !quote){ row.push(cell); cell=''; }
-          else if((c === '
-' || c === '') && !quote){
+          else if((code === 10 || code === 13) && !quote){
             if(cell || row.length){ row.push(cell); rows.push(row); row=[]; cell=''; }
-            if(c === '' && n === '
-') i++;
+            if(code === 13 && n && n.charCodeAt(0) === 10) i++;
           } else cell += c;
         }
         if(cell || row.length){ row.push(cell); rows.push(row); }
         return rows;
-      }
+      };
       window.tcpLoadEmployees = async function(){
         var status = document.getElementById('tcpEmployeeStatus');
         status.textContent = 'กำลังโหลดข้อมูลพนักงาน...';
@@ -264,7 +269,11 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         }).join('') || '<div class="rounded-2xl bg-red-50 p-5 text-center text-slate-500">ไม่พบข้อมูลที่ค้นหา</div>';
       }
 
+      document.addEventListener('DOMContentLoaded', function(){
+        if(window.tcpRenderForms) window.tcpRenderForms();
+      });
       setTimeout(function(){ if(window.tcpRenderForms) window.tcpRenderForms(); }, 0);
+      setTimeout(function(){ if(window.tcpRenderForms) window.tcpRenderForms(); }, 300);
     </script>
   </div></body>
 </html>
