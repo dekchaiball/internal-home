@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>T.C. Pharma-Chem</title>
+<script>tailwind={config:{darkMode:"class"}};</script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={darkMode:"class"};</script>
 <style>
 body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
 .hero-visual{background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.9) 0 15%,rgba(255,255,255,.35) 16% 24%,transparent 25%),radial-gradient(circle at 50% 80%,rgba(229,48,48,.30),transparent 26%),linear-gradient(135deg,rgba(253,234,234,.28),rgba(229,48,48,.20));}
@@ -25,8 +25,9 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           <a href="#" class="h-14 flex items-center text-red-600 border-b-2 border-red-600">หน้าแรก</a><a href="https://chat.google.com/" class="h-14 flex items-center ">ติดต่อ IT</a><a href="#" class="h-14 flex items-center ">ประกาศทั้งหมด</a><a href="#" class="h-14 flex items-center ">แบบฟอร์ม</a><a href="#" class="h-14 flex items-center ">ปฏิทินองค์กร</a>
         </div>
         <div class="flex items-center gap-2">
-          <button type="button" onclick="tcpOpenEmployeeSearch()" class="w-11 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow grid place-items-center hover:scale-105 transition" title="ค้นหาพนักงาน">🔎</button>
-          <button type="button" onclick="tcpToggleDark()" class="w-11 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow grid place-items-center hover:scale-105 transition" title="Dark Mode">🌙</button>
+          <button type="button" onclick="window.tcpOpenEmployeeSearch && window.tcpOpenEmployeeSearch()" class="hidden sm:flex items-center gap-2 px-4 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow font-bold hover:scale-105 transition" title="ค้นหาเพื่อน TCP">🔎 <span>ค้นหาเพื่อน TCP</span></button>
+          <button type="button" onclick="window.tcpOpenEmployeeSearch && window.tcpOpenEmployeeSearch()" class="sm:hidden w-11 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow grid place-items-center hover:scale-105 transition" title="ค้นหาเพื่อน TCP">🔎</button>
+          <button type="button" onclick="window.tcpToggleDark && window.tcpToggleDark()" class="flex items-center gap-2 px-4 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow font-bold hover:scale-105 transition" title="Dark Mode"><span id="tcpThemeIcon">🌙</span><span class="hidden sm:inline" id="tcpThemeLabel">Dark</span></button>
         </div>
       </div>
     </nav>
@@ -68,7 +69,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         <div class="rounded-[32px] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl p-7">
           <h2 class="text-2xl font-black">🏢 แผนกของเรา</h2><p class="text-slate-500 dark:text-slate-400 mb-5">คลิกเพื่อดูแบบฟอร์มและข้อมูลของแต่ละแผนก</p>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <button type="button" onclick="tcpFilterForms('FIT')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">💻</div><div><b>FIT</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกการเงินและเทคโนโลยีสารสนเทศ</p></div></button><button type="button" onclick="tcpFilterForms('PLD')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">👥</div><div><b>PLD</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกทรัพยากรบุคคลและกฎหมาย</p></div></button><button type="button" onclick="tcpFilterForms('ACD')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">💰</div><div><b>ACD</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกบัญชีและบริหารงานสำนักงาน</p></div></button><button type="button" onclick="tcpFilterForms('RDA')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🧪</div><div><b>RDA</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกวิจัยพัฒนาและกำกับดูแลผลิตภัณฑ์</p></div></button><button type="button" onclick="tcpFilterForms('SCD')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🏭</div><div><b>SCD</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกชัพพลายเชน</p></div></button><button type="button" onclick="tcpFilterForms('MKT')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">📣</div><div><b>MKT</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกการตลาด</p></div></button><button type="button" onclick="tcpFilterForms('COM')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🛒</div><div><b>COM</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกคอมเมอร์เชียล</p></div></button><button type="button" onclick="tcpFilterForms('QAI')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🛡️</div><div><b>QAI</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกประกันคุณภาพและควบคุมภายใน</p></div></button><button type="button" onclick="tcpFilterForms('KYA')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🌿</div><div><b>KYA</b><p class="text-xs text-slate-500 dark:text-slate-400">งานเกษตรเขาใหญ่</p></div></button>
+            <button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('FIT')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">💻</div><div><b>FIT</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกการเงินและเทคโนโลยีสารสนเทศ</p></div></button><button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('PLD')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">👥</div><div><b>PLD</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกทรัพยากรบุคคลและกฎหมาย</p></div></button><button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('ACD')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">💰</div><div><b>ACD</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกบัญชีและบริหารงานสำนักงาน</p></div></button><button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('RDA')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🧪</div><div><b>RDA</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกวิจัยพัฒนาและกำกับดูแลผลิตภัณฑ์</p></div></button><button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('SCD')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🏭</div><div><b>SCD</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกชัพพลายเชน</p></div></button><button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('MKT')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">📣</div><div><b>MKT</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกการตลาด</p></div></button><button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('COM')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🛒</div><div><b>COM</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกคอมเมอร์เชียล</p></div></button><button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('QAI')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🛡️</div><div><b>QAI</b><p class="text-xs text-slate-500 dark:text-slate-400">แผนกประกันคุณภาพและควบคุมภายใน</p></div></button><button type="button" onclick="window.tcpFilterForms && window.tcpFilterForms('KYA')" class="rounded-2xl border border-slate-100 dark:border-slate-800 p-4 shadow-sm flex gap-4 items-center text-left hover:border-red-300 hover:shadow-lg transition bg-white dark:bg-slate-950"><div class="text-4xl">🌿</div><div><b>KYA</b><p class="text-xs text-slate-500 dark:text-slate-400">งานเกษตรเขาใหญ่</p></div></button>
           </div>
         </div>
         <div id="announcements" class="rounded-[32px] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl p-7">
@@ -85,8 +86,8 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           <input id="tcpFormSearch" oninput="tcpRenderForms()" class="rounded-2xl border border-slate-200 dark:border-slate-700 dark:bg-slate-950 px-5 py-3 min-w-[280px]" placeholder="ค้นหาแบบฟอร์ม...">
         </div>
         <div id="tcpDeptFilters" class="flex gap-3 overflow-auto pb-2 mb-5 mini-scroll">
-          <button type="button" data-dept="ALL" onclick="tcpFilterForms('ALL')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-red-600 text-white font-black">ทั้งหมด</button>
-          <button type="button" data-dept="FIT" onclick="tcpFilterForms('FIT')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">FIT</button><button type="button" data-dept="PLD" onclick="tcpFilterForms('PLD')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">PLD</button><button type="button" data-dept="ACD" onclick="tcpFilterForms('ACD')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">ACD</button><button type="button" data-dept="RDA" onclick="tcpFilterForms('RDA')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">RDA</button><button type="button" data-dept="SCD" onclick="tcpFilterForms('SCD')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">SCD</button><button type="button" data-dept="MKT" onclick="tcpFilterForms('MKT')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">MKT</button><button type="button" data-dept="COM" onclick="tcpFilterForms('COM')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">COM</button><button type="button" data-dept="QAI" onclick="tcpFilterForms('QAI')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">QAI</button><button type="button" data-dept="KYA" onclick="tcpFilterForms('KYA')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">KYA</button>
+          <button type="button" data-dept="ALL" onclick="window.tcpFilterForms && window.tcpFilterForms('ALL')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-red-600 text-white font-black">ทั้งหมด</button>
+          <button type="button" data-dept="FIT" onclick="window.tcpFilterForms && window.tcpFilterForms('FIT')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">FIT</button><button type="button" data-dept="PLD" onclick="window.tcpFilterForms && window.tcpFilterForms('PLD')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">PLD</button><button type="button" data-dept="ACD" onclick="window.tcpFilterForms && window.tcpFilterForms('ACD')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">ACD</button><button type="button" data-dept="RDA" onclick="window.tcpFilterForms && window.tcpFilterForms('RDA')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">RDA</button><button type="button" data-dept="SCD" onclick="window.tcpFilterForms && window.tcpFilterForms('SCD')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">SCD</button><button type="button" data-dept="MKT" onclick="window.tcpFilterForms && window.tcpFilterForms('MKT')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">MKT</button><button type="button" data-dept="COM" onclick="window.tcpFilterForms && window.tcpFilterForms('COM')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">COM</button><button type="button" data-dept="QAI" onclick="window.tcpFilterForms && window.tcpFilterForms('QAI')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">QAI</button><button type="button" data-dept="KYA" onclick="window.tcpFilterForms && window.tcpFilterForms('KYA')" class="tcp-filter-btn px-8 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black hover:bg-red-50">KYA</button>
         </div>
         <div id="tcpFormsGrid" class="grid sm:grid-cols-2 lg:grid-cols-6 gap-5"></div>
         <div id="tcpFormsEmpty" class="hidden rounded-3xl bg-red-50 p-8 text-center text-slate-500 mt-4">ไม่พบแบบฟอร์มในแผนกนี้</div>
@@ -99,23 +100,23 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         <div><b>เมนูด่วน</b><div class="grid gap-2 mt-3 text-red-100 text-sm"><a href="#">หน้าแรก</a><a href="https://chat.google.com/">ติดต่อ IT</a><a href="#">ประกาศทั้งหมด</a><a href="#">แบบฟอร์ม</a><a href="#">ปฏิทินองค์กร</a></div></div>
         <div><b>ติดต่อเรา</b><p class="text-red-100 text-sm mt-3">☎ แผนกเทคโนโลยีสารสนเทศ<br>📞 02-123-4567 ต่อ 123<br>✉ it-support@tcpharmachem.com<br>⏱ จันทร์ - ศุกร์ 08:00 - 17:00</p></div>
         <div><b>ติดตามเรา</b><p class="text-red-100 text-sm mt-3">Stay connected with us</p><div class="flex gap-3 mt-4">
-          <span class="w-11 h-11 rounded-full bg-blue-600 grid place-items-center text-white font-black shadow">f</span>
-          <span class="w-11 h-11 rounded-full bg-green-500 grid place-items-center text-white font-black shadow">LINE</span>
-          <span class="w-11 h-11 rounded-full bg-red-500 grid place-items-center text-white font-black shadow">▶</span>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-blue-600 grid place-items-center text-white font-black shadow hover:scale-110 transition">f</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-green-500 grid place-items-center text-white font-black shadow hover:scale-110 transition">LINE</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-red-500 grid place-items-center text-white font-black shadow hover:scale-110 transition">▶</a>
         </div></div>
       </div>
-      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 14:09</span></div>
+      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 14:48</span></div>
     </footer>
 
     <div id="tcpEmployeeModal" class="fixed inset-0 z-50 hidden">
-      <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="tcpCloseEmployeeSearch()"></div>
+      <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="window.tcpCloseEmployeeSearch && window.tcpCloseEmployeeSearch()"></div>
       <div class="relative max-w-3xl mx-auto mt-24 bg-white dark:bg-slate-900 rounded-[32px] shadow-2xl border border-white/50 dark:border-slate-700 overflow-hidden">
         <div class="p-6 bg-gradient-to-r from-red-700 to-red-500 text-white">
           <div class="flex justify-between items-start gap-4">
             <div><h2 class="text-2xl font-black">🔎 ค้นหาข้อมูลพนักงาน</h2><p class="text-red-100 text-sm">ค้นหาด้วยชื่อ นามสกุล ชื่อเล่น เบอร์โต๊ะ เบอร์มือถือ หรืออีเมล</p></div>
-            <button onclick="tcpCloseEmployeeSearch()" class="w-10 h-10 rounded-full bg-white/15">×</button>
+            <button onclick="window.tcpCloseEmployeeSearch && window.tcpCloseEmployeeSearch()" class="w-10 h-10 rounded-full bg-white/15">×</button>
           </div>
-          <input id="tcpEmployeeSearchInput" oninput="tcpSearchEmployees()" class="mt-5 w-full rounded-2xl px-5 py-4 text-slate-800 outline-none" placeholder="พิมพ์คำค้นหา เช่น สมชาย, นิด, 123, 08x, email@...">
+          <input id="tcpEmployeeSearchInput" oninput="window.tcpSearchEmployees && window.tcpSearchEmployees()" class="mt-5 w-full rounded-2xl px-5 py-4 text-slate-800 outline-none" placeholder="พิมพ์คำค้นหา เช่น สมชาย, นิด, 123, 08x, email@...">
         </div>
         <div class="p-6">
           <div id="tcpEmployeeStatus" class="text-sm text-slate-500 mb-4">กำลังเตรียมระบบค้นหา...</div>
@@ -133,22 +134,34 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
       window.tcpEmployees = [];
       window.tcpEmployeesLoaded = false;
 
-      function tcpEsc(v){ return String(v ?? '').replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]; }); }
+      window.tcpEsc = function(v){ return String(v ?? '').replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]; }); };
 
-      function tcpToggleDark(){
+      window.tcpToggleDark = function(){
         document.documentElement.classList.toggle('dark');
         localStorage.setItem('tcpPortalDark', document.documentElement.classList.contains('dark') ? '1':'0');
-      }
+        var dark = document.documentElement.classList.contains('dark');
+        var icon = document.getElementById('tcpThemeIcon');
+        var label = document.getElementById('tcpThemeLabel');
+        if(icon) icon.textContent = dark ? '☀️' : '🌙';
+        if(label) label.textContent = dark ? 'Light' : 'Dark';
+      };
       if(localStorage.getItem('tcpPortalDark') === '1') document.documentElement.classList.add('dark');
+      setTimeout(function(){
+        var dark = document.documentElement.classList.contains('dark');
+        var icon = document.getElementById('tcpThemeIcon');
+        var label = document.getElementById('tcpThemeLabel');
+        if(icon) icon.textContent = dark ? '☀️' : '🌙';
+        if(label) label.textContent = dark ? 'Light' : 'Dark';
+      },0);
 
-      function tcpFilterForms(dept){
+      window.tcpFilterForms = function(dept){
         window.tcpSelectedDept = dept || 'ALL';
-        tcpRenderForms();
+        window.tcpRenderForms();
         var target = document.getElementById('forms');
         if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
-      }
+      };
 
-      function tcpRenderForms(){
+      window.tcpRenderForms = function(){
         var forms = window.TCP_FORMS || [];
         var selected = window.tcpSelectedDept || 'ALL';
         var searchBox = document.getElementById('tcpFormSearch');
@@ -172,10 +185,10 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         if(!grid) return;
 
         grid.innerHTML = filtered.map(function(f){
-          return '<a href="' + tcpEsc(f.url) + '" target="_blank" rel="noopener noreferrer" class="rounded-3xl border border-slate-100 dark:border-slate-800 p-5 shadow-sm text-center hover:shadow-lg hover:-translate-y-1 transition bg-white dark:bg-slate-950">'
-            + '<div class="text-4xl mb-3">' + tcpEsc(f.icon || '📋') + '</div>'
-            + '<b>' + tcpEsc(f.name || 'แบบฟอร์ม') + '</b>'
-            + '<p class="text-xs text-red-600 font-bold mt-1">' + tcpEsc(f.dept || '') + '</p>'
+          return '<a href="' + window.tcpEsc(f.url) + '" target="_blank" rel="noopener noreferrer" class="rounded-3xl border border-slate-100 dark:border-slate-800 p-5 shadow-sm text-center hover:shadow-lg hover:-translate-y-1 transition bg-white dark:bg-slate-950">'
+            + '<div class="text-4xl mb-3">' + window.tcpEsc(f.icon || '📋') + '</div>'
+            + '<b>' + window.tcpEsc(f.name || 'แบบฟอร์ม') + '</b>'
+            + '<p class="text-xs text-red-600 font-bold mt-1">' + window.tcpEsc(f.dept || '') + '</p>'
             + '<button type="button" class="mt-4 w-full rounded-xl border dark:border-slate-700 py-2 font-bold">เปิดฟอร์ม</button>'
             + '</a>';
         }).join('');
@@ -183,18 +196,18 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         if(empty) empty.classList.toggle('hidden', filtered.length > 0);
       }
 
-      function tcpOpenEmployeeSearch(){
+      window.tcpOpenEmployeeSearch = function(){
         document.getElementById('tcpEmployeeModal').classList.remove('hidden');
         setTimeout(function(){ var i=document.getElementById('tcpEmployeeSearchInput'); if(i) i.focus(); },50);
-        if(!window.tcpEmployeesLoaded) tcpLoadEmployees();
+        if(!window.tcpEmployeesLoaded) window.tcpLoadEmployees();
       }
-      function tcpCloseEmployeeSearch(){ document.getElementById('tcpEmployeeModal').classList.add('hidden'); }
+      window.tcpCloseEmployeeSearch = function(){ document.getElementById('tcpEmployeeModal').classList.add('hidden'); };
 
-      function tcpSheetIdFromUrl(url){
+      window.tcpSheetIdFromUrl = function(url){
         var m = String(url).match(//spreadsheets/d/([^/]+)/);
         return m ? m[1] : '';
       }
-      function tcpParseCSV(text){
+      window.tcpParseCSV = function(text){
         var rows=[], row=[], cell='', quote=false;
         for(var i=0;i<text.length;i++){
           var c=text[i], n=text[i+1];
@@ -211,29 +224,29 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         if(cell || row.length){ row.push(cell); rows.push(row); }
         return rows;
       }
-      async function tcpLoadEmployees(){
+      window.tcpLoadEmployees = async function(){
         var status = document.getElementById('tcpEmployeeStatus');
         status.textContent = 'กำลังโหลดข้อมูลพนักงาน...';
-        var id = tcpSheetIdFromUrl(window.TCP_EMPLOYEE_SHEET_URL);
+        var id = window.tcpSheetIdFromUrl(window.TCP_EMPLOYEE_SHEET_URL);
         if(!id){ status.textContent='ไม่พบ Sheet ID'; return; }
         var url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:csv';
         try{
           var res = await fetch(url);
           if(!res.ok) throw new Error('โหลดข้อมูลไม่ได้');
           var csv = await res.text();
-          var rows = tcpParseCSV(csv);
+          var rows = window.tcpParseCSV(csv);
           var headers = (rows.shift() || []).map(function(h){return String(h).trim();});
           window.tcpEmployees = rows.filter(function(r){return r.some(Boolean);}).map(function(r){
             var o={}; headers.forEach(function(h,i){ o[h || ('col'+i)] = r[i] || ''; }); return o;
           });
           window.tcpEmployeesLoaded = true;
           status.textContent = 'โหลดข้อมูลแล้ว ' + window.tcpEmployees.length + ' รายการ กรุณาพิมพ์คำค้นหา';
-          tcpSearchEmployees();
+          window.tcpSearchEmployees();
         }catch(e){
           status.innerHTML = 'ยังโหลดข้อมูลไม่ได้ อาจต้องเปิดสิทธิ์ Google Sheet เป็น Anyone with the link หรือ Publish to web ก่อน';
         }
       }
-      function tcpSearchEmployees(){
+      window.tcpSearchEmployees = function(){
         var q = (document.getElementById('tcpEmployeeSearchInput')?.value || '').trim().toLowerCase();
         var box = document.getElementById('tcpEmployeeResults');
         var status = document.getElementById('tcpEmployeeStatus');
@@ -245,13 +258,13 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           var vals = Object.entries(o).filter(function(x){return x[1];}).slice(0,8);
           var title = vals[0] ? vals[0][1] : 'พนักงาน';
           return '<div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 bg-white dark:bg-slate-950">'
-            + '<b class="text-lg">' + tcpEsc(title) + '</b>'
-            + '<div class="grid sm:grid-cols-2 gap-2 mt-3 text-sm">' + vals.map(function(x){ return '<div><span class="text-slate-400">' + tcpEsc(x[0]) + ':</span> ' + tcpEsc(x[1]) + '</div>'; }).join('') + '</div>'
+            + '<b class="text-lg">' + window.tcpEsc(title) + '</b>'
+            + '<div class="grid sm:grid-cols-2 gap-2 mt-3 text-sm">' + vals.map(function(x){ return '<div><span class="text-slate-400">' + window.tcpEsc(x[0]) + ':</span> ' + window.tcpEsc(x[1]) + '</div>'; }).join('') + '</div>'
             + '</div>';
         }).join('') || '<div class="rounded-2xl bg-red-50 p-5 text-center text-slate-500">ไม่พบข้อมูลที่ค้นหา</div>';
       }
 
-      setTimeout(tcpRenderForms, 0);
+      setTimeout(function(){ if(window.tcpRenderForms) window.tcpRenderForms(); }, 0);
     </script>
   </div></body>
 </html>
