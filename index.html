@@ -25,8 +25,8 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           <a href="#" class="h-14 flex items-center text-red-600 border-b-2 border-red-600">หน้าแรก</a><a href="https://chat.google.com/" class="h-14 flex items-center ">ติดต่อ IT</a>
         </div>
         <div class="flex items-center gap-2">
-          <button type="button" onclick="window.tcpOpenEmployeeSearch && window.tcpOpenEmployeeSearch()" class="hidden sm:flex items-center gap-2 px-4 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow font-bold hover:scale-105 transition" title="ค้นหาเพื่อน TCP">🔎 <span>ค้นหาเพื่อน TCP</span></button>
-          <button type="button" onclick="window.tcpOpenEmployeeSearch && window.tcpOpenEmployeeSearch()" class="sm:hidden w-11 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow grid place-items-center hover:scale-105 transition" title="ค้นหาเพื่อน TCP">🔎</button>
+          <button type="button" id="tcpSearchFriendBtn" onclick="window.tcpOpenEmployeeSearch && window.tcpOpenEmployeeSearch()" class="hidden sm:flex items-center gap-2 px-4 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow font-bold hover:scale-105 transition" title="ค้นหาเพื่อน TCP">🔎 <span>ค้นหาเพื่อน TCP</span></button>
+          <button type="button" id="tcpSearchFriendBtnMobile" onclick="window.tcpOpenEmployeeSearch && window.tcpOpenEmployeeSearch()" class="sm:hidden w-11 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow grid place-items-center hover:scale-105 transition" title="ค้นหาเพื่อน TCP">🔎</button>
         </div>
       </div>
     </nav>
@@ -104,7 +104,7 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
           <a href="#" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-full bg-red-500 grid place-items-center text-white font-black shadow hover:scale-110 transition">▶</a>
         </div></div>
       </div>
-      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 15:56</span></div>
+      <div class="max-w-7xl mx-auto px-6 py-4 border-t border-white/10 text-sm flex justify-between"><span>T.C. Pharma-Chem Co., Ltd. — Intranet Portal | พัฒนาโดย IT Department</span><span>Last updated: 13 พ.ค. 2569 16:09</span></div>
     </footer>
 
     <div id="tcpEmployeeModal" class="fixed inset-0 z-50 hidden">
@@ -181,10 +181,12 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
       }
 
       window.tcpOpenEmployeeSearch = function(){
-        document.getElementById('tcpEmployeeModal').classList.remove('hidden');
+        var modal = document.getElementById('tcpEmployeeModal');
+        if(!modal){ alert('ไม่พบหน้าต่างค้นหาพนักงาน กรุณาตรวจสอบไฟล์ index.html'); return; }
+        modal.classList.remove('hidden');
         setTimeout(function(){ var i=document.getElementById('tcpEmployeeSearchInput'); if(i) i.focus(); },50);
-        if(!window.tcpEmployeesLoaded) window.tcpLoadEmployees();
-      }
+        if(!window.tcpEmployeesLoaded && window.tcpLoadEmployees) window.tcpLoadEmployees();
+      };
       window.tcpCloseEmployeeSearch = function(){ document.getElementById('tcpEmployeeModal').classList.add('hidden'); };
 
       window.tcpSheetIdFromUrl = function(url){
@@ -263,11 +265,13 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         }
       };
       window.tcpCopyEmployee = function(idx, btn){
+        btn = btn || document.getElementById('tcpCopyBtn' + idx);
         var o = (window.tcpLastFound || [])[idx];
-        if(!o) return;
-        var txt = Object.entries(o).filter(function(x){return x[1];}).map(function(x){return x[0] + ': ' + x[1];}).join('
+        var txt = btn && btn.getAttribute('data-copy');
+        if(!txt && o) txt = Object.entries(o).filter(function(x){return x[1];}).map(function(x){return x[0] + ': ' + x[1];}).join('
 ');
-        window.tcpCopyText(txt, btn || document.getElementById('tcpCopyBtn' + idx));
+        if(!txt) return;
+        window.tcpCopyText(txt, btn);
       };
 
       window.tcpSearchEmployees = function(){
@@ -283,10 +287,11 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
         box.innerHTML = found.map(function(o,idx){
           var vals = Object.entries(o).filter(function(x){return x[1];}).slice(0,8);
           var title = vals[0] ? vals[0][1] : 'พนักงาน';
+          var copyText = Object.entries(o).filter(function(x){return x[1];}).map(function(x){return x[0] + ': ' + x[1];}).join('\n');
           return '<div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 bg-white dark:bg-slate-950">'
             + '<div class="flex items-start justify-between gap-3">'
             + '<b class="text-lg">' + window.tcpEsc(title) + '</b>'
-            + '<button id="tcpCopyBtn' + idx + '" type="button" onclick="window.tcpCopyEmployee(' + idx + ', this)" class="shrink-0 px-3 py-2 rounded-xl bg-red-50 text-red-700 border border-red-100 text-xs font-bold hover:bg-red-600 hover:text-white transition" title="Copy ข้อมูลพนักงาน">📋 Copy</button>'
+            + '<button id="tcpCopyBtn' + idx + '" type="button" data-copy="' + window.tcpEsc(copyText) + '" onclick="event.preventDefault();event.stopPropagation();window.tcpCopyEmployee(' + idx + ', this)" class="shrink-0 px-3 py-2 rounded-xl bg-red-50 text-red-700 border border-red-100 text-xs font-bold hover:bg-red-600 hover:text-white transition" title="Copy ข้อมูลพนักงาน">📋 Copy</button>'
             + '</div>'
             + '<div class="grid sm:grid-cols-2 gap-2 mt-3 text-sm">' + vals.map(function(x){ return '<div><span class="text-slate-400">' + window.tcpEsc(x[0]) + ':</span> ' + window.tcpEsc(x[1]) + '</div>'; }).join('') + '</div>'
             + '</div>';
@@ -295,6 +300,10 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
 
       document.addEventListener('DOMContentLoaded', function(){
         if(window.tcpRenderForms) window.tcpRenderForms();
+        ['tcpSearchFriendBtn','tcpSearchFriendBtnMobile'].forEach(function(id){
+          var b = document.getElementById(id);
+          if(b) b.addEventListener('click', function(e){ e.preventDefault(); window.tcpOpenEmployeeSearch(); });
+        });
       });
       setTimeout(function(){ if(window.tcpRenderForms) window.tcpRenderForms(); }, 0);
       setTimeout(function(){ if(window.tcpRenderForms) window.tcpRenderForms(); }, 300);
